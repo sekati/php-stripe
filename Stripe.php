@@ -420,6 +420,63 @@ class Stripe {
 	}
 
 	/**
+	 * Create a new coupon on the system
+	 *
+	 * @param string 		The coupon identifier, that will be used when applying it to a customer
+	 * @param string 		The duration the coupon will be in effect: "forever", "once", or "repeating"
+	 * @param int 			A positive integer between 1 and 100 that represents the discount the coupon will apply (if $amount_off is not passed)
+	 * @param int 			A positive integer representing the amount to subtract from an invoice total (if $percent_off is not passed)
+	 * @param string 		Currency of the amount_off parameter (if percent_off is not passed)
+	 * @param string 		(required only if duration is repeating) If duration is repeating, a positive integer that specifies the number of months the discount will be in effect
+	 * @param string 		A positive integer specifying the number of times the coupon can be redeemed before it's no longer valid. For example, you might have a 50% off coupon that the first 20 readers of your blog can use
+	 * @param string 		UTC timestamp specifying the last time at which the coupon can be redeemed. After the redeem_by date, the coupon can no longer be applied to new customers.
+	 */
+	public function coupon_create( $coupon_id, $duration = 'once', $percent_off=NULL, $amount_off=NULL, $currency=NULL, $duration_in_months=NULL, $max_redemptions=NULL, $redeem_by=NULL ) {
+		$params = array(
+			'id' => $coupon_id,
+		);
+			if($duration) $params['duration'] = $duration;
+			if($percent_off) $params['percent_off'] = $percent_off;
+			if($amount_off) $params['amount_off'] = $amount_off;
+			if(!$percent_off) $params['currency'] = ($currency) ? $currency : 'usd';
+			if($duration_in_months) $params['duration_in_months'] = $duration_in_months;
+			if($max_redemptions) $params['max_redemptions'] = $max_redemptions;
+			if($redeem_by) $params['redeem_by'] = $redeem_by;
+
+		return $this->_send_request( 'coupons', $params, STRIPE_METHOD_POST );
+	}
+
+	/**
+	 * Retrieve information about a given coupon
+	 *
+	 * @param  string        The coupon identifier you wish to get info about
+	 */
+	public function coupon_info( $coupon_id ) {
+		return $this->_send_request( 'coupons/'.$coupon_id );
+	}
+
+	/**
+	 * Delete a coupon from the system
+	 *
+	 * @param  string        The identifier of the coupon you want to delete
+	 */
+	public function coupon_delete( $coupon_id ) {
+		return $this->_send_request( 'coupons/'.$coupon_id, array(), STRIPE_METHOD_DELETE );
+	}
+
+	/**
+	 * Retrieve a list of the coupons in the system
+	 */
+	public function coupon_list( $count = 10, $offset = 0 ) {
+		$params['count'] = $count;
+		$params['offset'] = $offset;
+		$vars = http_build_query( $params, NULL, '&' );
+
+		return $this->_send_request( 'coupons?'.$vars );
+	}
+
+
+	/**
 	 * Private utility function that prepare and send the request to the API servers
 	 *
 	 * @param  string        The URL segments to use to complete the http request
