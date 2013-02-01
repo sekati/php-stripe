@@ -18,7 +18,7 @@ any of the methods in it, I've implemented all the public API methods available 
 	$config['stripe_key_test_secret']         = '';
 	$config['stripe_key_live_public']         = '';
 	$config['stripe_key_live_secret']         = '';
-	$config['stripe_test_mode']               = TRUE;
+	$config['stripe_test_mode']               = (ENVIRONMENT == 'production') ? FALSE : TRUE;
 	$config['stripe_verify_ssl']              = FALSE;
 
 	// Create the library object
