@@ -8,11 +8,12 @@ define( 'STRIPE_METHOD_POST', 'post' );
 define( 'STRIPE_METHOD_DELETE', 'delete' );
 
 /**
- * A simple to use library to access the stripe.com services
+ * A simple to use library to access the stripe.com services.
  *
  * @copyright   Copyright (c) 2011 Pixative Solutions
- * @author      Ben Cessa <ben@pixative.com>
- * @author_url  http://www.pixative.com
+ * @copyright 	Copyright (c) 2013 Sekati
+ * @author      Ben Cessa <ben@pixative.com> - http://www.pixative.com
+ * @author 		Jason Horwitz <jason@sekati.com>
  */
 class Stripe {
 	/**
