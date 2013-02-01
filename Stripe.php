@@ -432,16 +432,14 @@ class Stripe {
 	 * @param string 		UTC timestamp specifying the last time at which the coupon can be redeemed. After the redeem_by date, the coupon can no longer be applied to new customers.
 	 */
 	public function coupon_create( $coupon_id, $duration = 'once', $percent_off=NULL, $amount_off=NULL, $currency=NULL, $duration_in_months=NULL, $max_redemptions=NULL, $redeem_by=NULL ) {
-		$params = array(
-			'id' => $coupon_id,
-		);
-			if($duration) $params['duration'] = $duration;
-			if($percent_off) $params['percent_off'] = $percent_off;
-			if($amount_off) $params['amount_off'] = $amount_off;
-			if(!$percent_off) $params['currency'] = ($currency) ? $currency : 'usd';
-			if($duration_in_months) $params['duration_in_months'] = $duration_in_months;
-			if($max_redemptions) $params['max_redemptions'] = $max_redemptions;
-			if($redeem_by) $params['redeem_by'] = $redeem_by;
+		$params = array( 'id' => $coupon_id );
+		if($duration) $params['duration'] = $duration;
+		if($percent_off) $params['percent_off'] = $percent_off;
+		if($amount_off) $params['amount_off'] = $amount_off;
+		if(!$percent_off) $params['currency'] = ($currency) ? $currency : 'usd';
+		if($duration_in_months) $params['duration_in_months'] = $duration_in_months;
+		if($max_redemptions) $params['max_redemptions'] = $max_redemptions;
+		if($redeem_by) $params['redeem_by'] = $redeem_by;
 
 		return $this->_send_request( 'coupons', $params, STRIPE_METHOD_POST );
 	}
