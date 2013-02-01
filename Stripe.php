@@ -116,8 +116,9 @@ class Stripe {
 	 * @param  string        The customer email address, useful as reference
 	 * @param  string        A free form reference for the customer record
 	 * @param  string        A subscription plan identifier to add the customer to it
+	 * @param  string 		 If you provide a coupon code, the customer will have a discount applied on all recurring charges.
 	 */
-	public function customer_create( $card, $email, $desc = NULL, $plan = NULL ) {
+	public function customer_create( $card, $email, $desc = NULL, $plan = NULL, $coupon = NULL ) {
 		$params = array(
 			'card' => $card,
 			'email' => $email
@@ -126,6 +127,8 @@ class Stripe {
 			$params['description'] = $desc;
 		if( $plan )
 			$params['plan'] = $plan;
+		if( $coupon )
+			$params['coupon'] = $coupon;
 
 		return $this->_send_request( 'customers', $params, STRIPE_METHOD_POST );
 	}
@@ -144,7 +147,7 @@ class Stripe {
 	 *
 	 * @param  string        The customer ID for the record to update
 	 * @param  array         An array containing the new data for the user, you may use the
-	 *                       following keys: card, email, description
+	 *                       following keys: card, email, description, coupon
 	 */
 	public function customer_update( $customer_id, $newdata ) {
 		return $this->_send_request( 'customers/'.$customer_id, $newdata, STRIPE_METHOD_POST );
