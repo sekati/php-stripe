@@ -511,7 +511,7 @@ class Stripe {
 		// Get the response, clean the request and return the data
 		$response = curl_exec( $req );
 		curl_close( $req );
-		return $response;
+		return json_decode( $response );
 	}
 }
 // END Stripe Class
