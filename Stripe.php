@@ -44,7 +44,7 @@ class Stripe {
 	public function charge_customer( $amount, $customer_id, $desc ) {
 		$params = array(
 			'amount' => $amount,
-			'currency' => 'usd',
+			'currency' => $this->_conf['stripe_currency'],
 			'customer' => $customer_id,
 			'description' => $desc
 		);
@@ -63,7 +63,7 @@ class Stripe {
 	public function charge_card( $amount, $card, $desc ) {
 		$params = array(
 			'amount' => $amount,
-			'currency' => 'usd',
+			'currency' => $this->_conf['stripe_currency'],
 			'card' => $card,
 			'description' => $desc
 		);
@@ -222,7 +222,7 @@ class Stripe {
 		$params = array(
 			'card' => $card_data,
 			'amount' => $amount,
-			'currency' => 'usd'
+			'currency' => $this->_conf['stripe_currency']
 		);
 
 		return $this->_send_request( 'tokens', $params, STRIPE_METHOD_POST );
@@ -251,7 +251,7 @@ class Stripe {
 			'id' => $plan_id,
 			'amount' => $amount,
 			'name' => $name,
-			'currency' => 'usd',
+			'currency' => $this->_conf['stripe_currency'],
 			'interval' => $interval
 		);
 		if( $trial_days )
@@ -326,7 +326,7 @@ class Stripe {
 		$params = array(
 			'customer' => $customer_id,
 			'amount' => $amount,
-			'currency' => 'usd',
+			'currency' => $this->_conf['stripe_currency'],
 			'description' => $desc
 		);
 
@@ -351,7 +351,7 @@ class Stripe {
 	 */
 	public function invoiceitem_update( $invoiceitem_id, $amount, $desc = FALSE ) {
 		$params['amount'] = $amount;
-		$params['currency'] = 'usd';
+		$params['currency'] = $this->_conf['stripe_currency'];
 		if( $desc ) $params['description'] = $desc;
 
 		return $this->_send_request( 'invoiceitems/'.$invoiceitem_id, $params, STRIPE_METHOD_POST );
@@ -439,7 +439,7 @@ class Stripe {
 		if($duration) $params['duration'] = $duration;
 		if($percent_off) $params['percent_off'] = $percent_off;
 		if($amount_off) $params['amount_off'] = $amount_off;
-		if(!$percent_off) $params['currency'] = ($currency) ? $currency : 'usd';
+		if(!$percent_off) $params['currency'] = ($currency) ? $currency : $this->_conf['stripe_currency'];
 		if($duration_in_months) $params['duration_in_months'] = $duration_in_months;
 		if($max_redemptions) $params['max_redemptions'] = $max_redemptions;
 		if($redeem_by) $params['redeem_by'] = $redeem_by;
