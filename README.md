@@ -20,6 +20,7 @@ any of the methods in it, I've implemented all the public API methods available 
 	$config['stripe_key_live_secret']         = '';
 	$config['stripe_test_mode']               = (ENVIRONMENT == 'production') ? FALSE : TRUE;
 	$config['stripe_verify_ssl']              = FALSE;
+	$config['stripe_currency']                = 'usd';
 
 	// Create the library object
 	$stripe = new Stripe( $config );
