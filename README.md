@@ -45,3 +45,7 @@ Then is just the usual deal that you already know and love!
 
 	$this->load->library( 'stripe' );
 	echo $this->stripe->customer_list();
+
+	// if stripe_decode is enabled
+	$customers = $this->stripe->customer_list();
+	echo $customers->count;
