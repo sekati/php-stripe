@@ -511,7 +511,12 @@ class Stripe {
 		// Get the response, clean the request and return the data
 		$response = curl_exec( $req );
 		curl_close( $req );
-		return $response;
+
+		// Decode JSON if the user has enabled that option
+		if( isset($this->_conf['stripe_decode']) && $this->_conf['stripe_decode'] )
+			return json_decode( $response );
+		else
+			return $response;
 	}
 }
 // END Stripe Class

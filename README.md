@@ -21,12 +21,19 @@ any of the methods in it, I've implemented all the public API methods available 
 	$config['stripe_test_mode']               = (ENVIRONMENT == 'production') ? FALSE : TRUE;
 	$config['stripe_verify_ssl']              = FALSE;
 	$config['stripe_currency']                = 'usd';
+	$config['stripe_decode']                  = FALSE;
 
 	// Create the library object
 	$stripe = new Stripe( $config );
 
 	// Run the required operations
 	echo $stripe->customer_list();
+
+If stripe_decode is enabled, you could also query the object directly, like this:
+
+	// Get number of customers directly
+	$customers = $stripe->customer_list();
+	echo $customers->count;
 
 That's it! Have fun.
 
