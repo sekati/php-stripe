@@ -10,10 +10,11 @@ define( 'STRIPE_METHOD_DELETE', 'delete' );
 /**
  * A simple to use library to access the stripe.com services.
  *
- * @copyright   Copyright (c) 2011 Pixative Solutions
- * @copyright 	Copyright (c) 2013 Sekati
- * @author      Ben Cessa <ben@pixative.com> - http://www.pixative.com
- * @author 		Jason Horwitz <jason@sekati.com>
+ * @copyright	Copyright (c) 2011 Pixative Solutions
+ * @copyright	Copyright (c) 2013 Sekati
+ * @author		Ben Cessa <ben@pixative.com> - http://www.pixative.com
+ * @author		Jason Horwitz <jason@sekati.com>
+ * @author		David Rogers <redcore@gmail.com>
  */
 class Stripe {
 	/**
@@ -474,6 +475,51 @@ class Stripe {
 		$vars = http_build_query( $params, NULL, '&' );
 
 		return $this->_send_request( 'coupons?'.$vars );
+	}
+
+	/**
+	 * Register a new card on system
+	 *
+	 * @param  string        Customer ID to add the card to
+	 * @param  mixed         This can be a card token generated with stripe.js ( recommended ) or
+	 *                       an array with the card information: number, exp_month, exp_year, cvc, name
+	 */
+	public function card_create( $customer_id, $card ) {
+		return $this->_send_request( 'customers/'.$customer_id.'/cards', $card, STRIPE_METHOD_POST );
+	}
+
+	/**
+	 * Update an existing card on system
+	 *
+	 * @param  string        Customer ID to update
+	 * @param  string        Card ID to update
+	 * @param  array         An array containing the new data for the user, you may use the
+	 *                       following keys: name, exp_month, exp_year, line1, line2, city, state, zip, country
+	 */
+	public function card_update( $customer_id, $card_id, $newdata ) {
+		return $this->_send_request( 'customers/'.$customer_id."/cards/".$card_id, $newdata, STRIPE_METHOD_POST );
+	}
+
+	/**
+	 * Delete a card from the system
+	 *
+	 * @param string         Customer ID to update
+	 * @param string         Card ID to remove
+	 */
+	public function card_delete( $customer_id, $card_id) {
+		return $this->_send_request( 'customers/'.$customer_id."/cards/".$card_id, array(), STRIPE_METHOD_DELETE );
+	}
+
+	/**
+	 * Set a card to default
+	 * NOTE that this is a pseudofunction for the same functionality available with 'customer_update'
+	 *
+	 * @param  string        The customer ID for the record to update
+	 * @param  array         An array containing the new data for the user, likely used
+	 *                       for default_card in this case
+	 */
+	public function card_default( $customer_id, $newdata ) {
+		$this->customer_update( $customer_id, $newdata );
 	}
 
 
